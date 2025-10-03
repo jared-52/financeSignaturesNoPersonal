@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>2Accept — Team Email Signatures</title>
+<style>
+  body{font:14px/1.4 Arial,Helvetica,sans-serif;background:#fff;margin:24px;color:#111}
+  h1{font-size:20px;margin:0 0 16px}
+  .sig-wrap{margin:22px 0 8px}
+  .sig-title{font-weight:600;margin-bottom:6px}
+  .sig-container{border:1px dashed #e3e3e3;padding:14px;border-radius:10px;display:inline-block}
+  .sig-limit{max-width:760px}
+  @media print{
+    .sig-wrap{page-break-inside:avoid}
+    body{margin:8mm}
+    .sig-container{border:none;padding:0}
+  }
+</style>
+</head>
+<body>
+<h1>2Accept — Team Email Signatures (preview & copy)</h1>
+
+<script>
+/*** 1) CONFIG ***/
+const ASSETS = {
+  logo  : "https://adtvhczffmwtlqmjouel.supabase.co/storage/v1/object/public/2Accept%20Signatures/2accept-logo.png",
+  user  : "https://adtvhczffmwtlqmjouel.supabase.co/storage/v1/object/public/2Accept%20Signatures/person.png",
+  mail  : "https://adtvhczffmwtlqmjouel.supabase.co/storage/v1/object/public/2Accept%20Signatures/email.png",
+  web   : "https://adtvhczffmwtlqmjouel.supabase.co/storage/v1/object/public/2Accept%20Signatures/www.png",
+  phone : "https://adtvhczffmwtlqmjouel.supabase.co/storage/v1/object/public/2Accept%20Signatures/phone.png",
+};
+
+// Global finance/support line (shown on all signatures)
+const SUPPORT_PHONE = "888-294-7088";
+
+/*** 2) TEAM DATA ***/
+const TEAM = [
+  { name: "Natisha Guy",   email: "tee@2accept.com",    phone: "910-747-7273", website: "https://www.2accept.com" },
+  { name: "Megan Nasse",  email: "megann@2accept.com",  phone: "973-214-3862", website: "https://www.2accept.com" },
+  { name: "Shakina Dejordan",    email: "shakina@2accept.com",  phone: "347-623-4766", website: "https://www.2accept.com" },
+  { name: "Christina Niemi",   email: "christina@2accept.com",    phone: "303-974-8975", website: "https://www.2accept.com" },
+  { name: "Ariel Kishanov",  email: "arielk@2accept.com",  phone: "630-827-2978", website: "https://www.2accept.com" },
+  { name: "Jennifer Garcia",    email: "jennifer@2accept.com",  phone: "783-486-6366", website: "https://www.2accept.com" }
+];
+
+/*** 3) Signature HTML (no personal phone) ***/
+function signatureHtml(person){
+  const websiteText   = (person.website || "").replace(/^https?:\/\//,'');
+  const supportDigits = (SUPPORT_PHONE || "").replace(/[^0-9]/g,'');
+  return `
+<table class="sig-limit" cellpadding="0" cellspacing="0" style="border:none;border-collapse:collapse;font-family:Arial,sans-serif;">
+  <tr>
+    <!-- Left: Logo & Tagline -->
+    <td style="padding-right:20px;border-right:1px solid #cccccc;vertical-align:middle;text-align:center;">
+      <img src="${ASSETS.logo}" alt="2Accept Logo" style="height:60px;display:block;margin:0 auto;">
+      <div style="font-size:12px;color:#C33E8B;margin-top:4px;text-align:center;">
+        Payment Processing Solutions
+      </div>
+    </td>
+
+    <!-- Right: Name & Contact Info -->
+    <td style="padding-left:20px;vertical-align:middle;">
+      <table cellpadding="0" cellspacing="0" style="font-family:Arial,sans-serif;line-height:1.3;">
+        <!-- Name -->
+        <tr>
+          <td style="padding-right:8px;vertical-align:middle;padding-bottom:6px;">
+            <img src="${ASSETS.user}" alt="User" style="height:16px;width:16px;">
+          </td>
+          <td style="font-weight:bold;font-size:14px;color:#333333;vertical-align:middle;padding-bottom:6px;">
+            ${person.name}
+          </td>
+        </tr>
+
+        <!-- Email -->
+        <tr>
+          <td style="padding-right:8px;vertical-align:middle;padding-bottom:6px;">
+            <img src="${ASSETS.mail}" alt="Email" style="height:15px;width:15px;">
+          </td>
+          <td style="font-size:13px;color:#4A4A4A;vertical-align:middle;padding-bottom:6px;">
+            <a href="mailto:${person.email}" style="text-decoration:none;color:#4A4A4A;">${person.email}</a>
+          </td>
+        </tr>
+
+        <!-- Website -->
+        <tr>
+          <td style="padding-right:8px;vertical-align:middle;padding-bottom:6px;">
+            <img src="${ASSETS.web}" alt="Website" style="height:15px;width:15px;">
+          </td>
+          <td style="font-size:13px;color:#4A4A4A;vertical-align:middle;padding-bottom:6px;">
+            <a href="${person.website}" style="text-decoration:none;color:#4A4A4A;">${websiteText}</a>
+          </td>
+        </tr>
+
+        <!-- Finance Line (only) -->
+        <tr>
+          <td style="padding-right:8px;vertical-align:middle;">
+            <img src="${ASSETS.phone}" alt="Finance" style="height:15px;width:15px;">
+          </td>
+          <td style="font-size:13px;color:#4A4A4A;vertical-align:middle;">
+            <span style="font-weight:600;">Finance:</span>
+            <a href="tel:${supportDigits}" style="text-decoration:none;color:#4A4A4A;">${SUPPORT_PHONE}</a>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>`;
+}
+
+/*** 4) Render all signatures ***/
+function render(){
+  const root = document.body;
+  TEAM.forEach(p => {
+    const wrap = document.createElement('div');
+    wrap.innerHTML = `
+      <div class="sig-wrap">
+        <div class="sig-title">${p.name} — Signature</div>
+        <div class="sig-container">
+          ${signatureHtml(p)}
+        </div>
+      </div>
+    `;
+    root.appendChild(wrap);
+  });
+}
+render();
+</script>
+
+<p style="margin-top:28px;color:#666;font-size:12px;">
+Tip: Highlight any signature above, then copy and paste into Gmail → Settings → Signature.
+</p>
+</body>
+</html>
